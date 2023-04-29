@@ -31,7 +31,13 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
                 if (!resultado)
                     return BadRequest("Não foi possível cadastrar o produto!");
 
-                return Ok("Produto cadastrado com sucesso!");
+                var resposta = new Resposta
+                {
+                    Sucesso = resultado,
+                    Mensagem = "Produto cadastrado com sucesso"
+                };
+
+                return Ok(resposta);
             }
             catch (Exception ex)
             {
@@ -45,7 +51,12 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
             try
             {
                 var categorias = await _produtosService.ObterCategorias();
-                return Ok(categorias);
+                var resposta = new Resposta<IEnumerable<Categoria>>(categorias)
+                {
+                    Sucesso = true,
+                    Mensagem = "Categorias obtidas com sucesso!"
+                };
+                return Ok(resposta);
             }
             catch (Exception ex)
             {
