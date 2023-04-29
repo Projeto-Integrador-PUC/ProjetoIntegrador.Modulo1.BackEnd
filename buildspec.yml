@@ -13,10 +13,6 @@ phases:
     build:
         commands:
             - echo Build started on `date`
-            - export DB__User=${DB__User}
-            - export DB__Password=${DB__Password}
-            - export DB__ServerAddress=${DB__ServerAddress}
-            - export DB__Database=${DB__Database}
             - dotnet build -c Release
             - dotnet test -c Release --logger trx --results-directory ./testresults
       

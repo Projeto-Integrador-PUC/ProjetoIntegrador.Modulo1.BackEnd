@@ -29,5 +29,22 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Extensions
                 .AddTransient<IProdutosService, ProdutosService>()
                 .AddTransient<IProdutosRepository, ProdutosRepository>();
         }
+
+        public static string AllowCors(this WebApplicationBuilder builder)
+        {
+            var policyName = "AllowAll";
+            
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(policyName, builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
+            return policyName;
+        }
     }
 }
