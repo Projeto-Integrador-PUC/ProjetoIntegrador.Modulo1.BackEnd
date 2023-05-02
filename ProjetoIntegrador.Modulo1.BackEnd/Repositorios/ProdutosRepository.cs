@@ -98,14 +98,16 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
 
             var sql = $@"
             SELECT
-                nome AS {nameof(Produto.Nome)}, 
-                descricao AS {nameof(Produto.Descricao)}, 
-                preco AS {nameof(Produto.Preco)}, 
-                quantidade_estoque AS {nameof(Produto.Quantidade)}, 
-                categoria_id AS {nameof(Produto.Categoria)}, 
-                produto_destaque AS {nameof(Produto.Destaque)}, 
-                image_base64 AS {nameof(Produto.Imagem)}
-            FROM produtos
+                p.id AS {nameof(Produto.Id)},
+                p.nome AS {nameof(Produto.Nome)},
+                p.descricao AS {nameof(Produto.Descricao)},
+                p.preco AS {nameof(Produto.Preco)},
+                p.quantidade_estoque AS {nameof(Produto.Quantidade)},
+                p.categoria_id AS {nameof(Produto.Categoria)},
+                c.nome AS {nameof(Produto.NomeCategoria)},
+                p.produto_destaque AS {nameof(Produto.Destaque)},
+                p.imagem_base64 AS {nameof(Produto.Imagem)}
+            FROM produtos p
             INNER JOIN categorias c ON c.id = p.categoria_id
             ";
 
