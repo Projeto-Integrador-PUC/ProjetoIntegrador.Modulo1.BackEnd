@@ -16,6 +16,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(Resposta), 201)]
         public async Task<IActionResult> AdicionarProduto(Produto produto)
         {
             try
@@ -46,6 +47,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
         }
 
         [HttpGet("categorias")]
+        [ProducesResponseType(typeof(Resposta<IEnumerable<Categoria>>), 200)]
         public async Task<IActionResult> ObterCategorias()
         {
             try
@@ -65,6 +67,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(Resposta<IEnumerable<Produto>>), 200)]
         public async Task<IActionResult> ObterProdutos()
         {
             try
