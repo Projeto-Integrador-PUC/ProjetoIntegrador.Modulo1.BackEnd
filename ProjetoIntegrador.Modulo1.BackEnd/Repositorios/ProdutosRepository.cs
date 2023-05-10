@@ -121,7 +121,8 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
             var sql = $@"
             SELECT
                 id AS {nameof(Categoria.Id)}, 
-                nome AS {nameof(Categoria.Nome)}
+                nome AS {nameof(Categoria.Nome)},
+                imagem_base64 AS {nameof(Categoria.Imagem)}
             FROM categorias
             ";
 
