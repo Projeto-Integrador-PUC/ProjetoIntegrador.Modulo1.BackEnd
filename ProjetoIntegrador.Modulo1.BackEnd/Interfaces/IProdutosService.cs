@@ -9,5 +9,6 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Interfaces
         Task<IEnumerable<Produto>> ObterProdutos();
         Task<bool> RemoverProduto(int id);
         Task<IEnumerable<Categoria>> ObterCategorias();
+        Task<IEnumerable<Produto>> ObterProdutosDestaque();
     }
 }

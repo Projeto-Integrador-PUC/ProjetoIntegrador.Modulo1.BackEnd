@@ -82,5 +82,53 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet]
+
+        public async Task<IActionResult> ObterProdutosDestaque()
+        {
+            try
+            {
+                var produtos = await _produtosService.ObterProdutosDestaque();
+                var resposta = new Resposta<IEnumerable<Produto>>(produtos)
+                {
+                    Sucesso = true,
+                    Mensagem = "Produtos obtidos com sucesso!"
+                };
+                return Ok(resposta);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
