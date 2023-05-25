@@ -35,5 +35,10 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Servicos
         {
             return await _produtosRepository.ObterCategorias();
         }
+
+        public async Task<IEnumerable<Produto>> ObterProdutosDestaque()
+        {
+            return await _produtosRepository.ObterProdutosDestaque();
+        }
     }
 }

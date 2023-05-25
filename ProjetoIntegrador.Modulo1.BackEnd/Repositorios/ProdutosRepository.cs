@@ -121,19 +121,14 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
 
             var sql = $@"
             SELECT
-                p.id AS {nameof(Produto.Id)},
-                p.nome AS {nameof(Produto.Nome)},
-                p.descricao AS {nameof(Produto.Descricao)},
-                p.preco AS {nameof(Produto.Preco)},
-                p.quantidade_estoque AS {nameof(Produto.Quantidade)},
-                p.categoria_id AS {nameof(Produto.Categoria)},
-                c.nome AS {nameof(Produto.NomeCategoria)},
-                p.produto_destaque AS {nameof(Produto.Destaque)},
-                p.imagem_base64 AS {nameof(Produto.Imagem)}
-                
-            FROM produtos p
-            INNER JOIN categorias c ON c.id = p.categoria_id
-            WHERE p.categoria = 1
+                id AS {nameof(Produto.Id)},
+                nome AS {nameof(Produto.Nome)},
+                descricao AS {nameof(Produto.Descricao)},
+                preco AS {nameof(Produto.Preco)},
+                categoria_id AS {nameof(Produto.Categoria)},
+                imagem_base64 AS {nameof(Produto.Imagem)}
+            FROM produtos 
+            WHERE produto_destaque = 1
             ";
 
             return await conexao.QueryAsync<Produto>(sql);

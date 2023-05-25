@@ -86,8 +86,8 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
             }
         }
 
-        [HttpGet]
-
+        [HttpGet("destaques")]
+        [ProducesResponseType(typeof(Resposta<IEnumerable<Produto>>), 200)]
         public async Task<IActionResult> ObterProdutosDestaque()
         {
             try
@@ -105,33 +105,6 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-
-
-
-
-
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }
