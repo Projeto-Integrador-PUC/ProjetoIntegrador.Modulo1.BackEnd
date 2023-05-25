@@ -9,7 +9,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return Ok()
+            return Ok();
         }
     }
 }
