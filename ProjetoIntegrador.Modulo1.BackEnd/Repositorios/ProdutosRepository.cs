@@ -148,5 +148,26 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
 
             return await conexao.QueryAsync<Categoria>(sql);
         }
+
+        public async Task<Produto> ObterDetalhesDoProduto(int id)
+        {
+            using var conexao = new SqlConnection(_stringDeConexao);
+
+            var sql = $@"
+            SELECT
+                id AS {nameof(Produto.Id)},
+                nome AS {nameof(Produto.Nome)},
+                descricao AS {nameof(Produto.Descricao)},
+                preco AS {nameof(Produto.Preco)},
+                quantidade_estoque AS {nameof(Produto.Quantidade)},
+                categoria_id AS {nameof(Produto.Categoria)},
+                produto_destaque AS {nameof(Produto.Destaque)},
+                imagem_base64 AS {nameof(Produto.Imagem)}
+            FROM produtos 
+            WHERE id = @id
+            ";
+
+            return await conexao.QueryFirstOrDefaultAsync<Produto>(sql, new { id });
+        }
     }
 }

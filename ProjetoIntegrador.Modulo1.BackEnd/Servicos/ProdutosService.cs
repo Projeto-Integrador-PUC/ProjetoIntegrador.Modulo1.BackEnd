@@ -40,5 +40,10 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Servicos
         {
             return await _produtosRepository.ObterProdutosDestaque();
         }
+
+        public async Task<Produto> ObterDetalhesDoProduto(int id)
+        {
+            return await _produtosRepository.ObterDetalhesDoProduto(id);
+        }
     }
 }

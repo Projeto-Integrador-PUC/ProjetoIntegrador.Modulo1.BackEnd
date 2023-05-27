@@ -106,5 +106,25 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Resposta<Produto>), 200)]
+        public async Task<IActionResult> ObterDetalhesDoProduto(int id)
+        {
+            try
+            {
+                var produto = await _produtosService.ObterDetalhesDoProduto(id);
+                var resposta = new Resposta<Produto>(produto)
+                {
+                    Sucesso = true,
+                    Mensagem = "Produto obtido com sucesso!"
+                };
+                return Ok(resposta);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
     }
 }
