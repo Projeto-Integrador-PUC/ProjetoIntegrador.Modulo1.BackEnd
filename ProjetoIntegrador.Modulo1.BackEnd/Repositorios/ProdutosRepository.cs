@@ -28,7 +28,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
             };
 
             var sql = $@"
-            INSERT INTO produtos (nome, descricao, preco, quantidade_estoque, categoria_id, produto_destaque, imagem_base64)
+            INSERT INTO produto (nome, descricao, preco, quantidade_estoque, categoria_id, produto_destaque, imagem_base64)
             VALUES (@nome, @descricao, @preco, @quantidade_estoque, @categoria_id, @produto_destaque, @imagem_base64)
             ";
 
@@ -56,7 +56,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
             };
 
             var sql = $@"
-            UPDATE produtos 
+            UPDATE produto
             SET nome = @nome, 
                 descricao = @descricao, 
                 preco = @preco, 
@@ -80,7 +80,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
             using var conexao = new SqlConnection(_stringDeConexao);
 
             var sql = @"
-            DELETE FROM produtos 
+            DELETE FROM produto 
             WHERE id = @id
             ";
 
@@ -107,7 +107,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
                 c.nome AS {nameof(Produto.NomeCategoria)},
                 p.produto_destaque AS {nameof(Produto.Destaque)},
                 p.imagem_base64 AS {nameof(Produto.Imagem)}
-            FROM produtos p
+            FROM produto p
             INNER JOIN categorias c ON c.id = p.categoria_id
             ";
 
@@ -127,7 +127,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
                 preco AS {nameof(Produto.Preco)},
                 categoria_id AS {nameof(Produto.Categoria)},
                 imagem_base64 AS {nameof(Produto.Imagem)}
-            FROM produtos 
+            FROM produto
             WHERE produto_destaque = 1
             ";
 
@@ -143,7 +143,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
                 id AS {nameof(Categoria.Id)}, 
                 nome AS {nameof(Categoria.Nome)},
                 imagem_base64 AS {nameof(Categoria.Imagem)}
-            FROM categorias
+            FROM categoria
             ";
 
             return await conexao.QueryAsync<Categoria>(sql);
@@ -163,7 +163,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
                 categoria_id AS {nameof(Produto.Categoria)},
                 produto_destaque AS {nameof(Produto.Destaque)},
                 imagem_base64 AS {nameof(Produto.Imagem)}
-            FROM produtos 
+            FROM produto
             WHERE id = @id
             ";
 
