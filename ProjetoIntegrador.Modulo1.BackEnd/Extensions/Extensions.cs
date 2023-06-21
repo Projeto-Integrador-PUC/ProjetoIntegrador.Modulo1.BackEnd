@@ -27,6 +27,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Extensions
         {
             builder.Services
                 .AddTransient<IProdutosService, ProdutosService>()
+                .AddTransient<IPagamentosService, PagamentosService>()
                 .AddTransient<IProdutosRepository, ProdutosRepository>();
         }
 
