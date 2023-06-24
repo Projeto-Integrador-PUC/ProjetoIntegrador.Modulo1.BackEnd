@@ -12,7 +12,8 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Models
         public bool Destaque { get; set; }
         public CategoriaEnum Categoria { get; set; }
         public string? NomeCategoria { get; set; }
-        public string Imagem { get; set; }
+        public string? Imagem { get; set; }
+        public int? QuantidadeSelecionada { get; set; }
 
     }
 }

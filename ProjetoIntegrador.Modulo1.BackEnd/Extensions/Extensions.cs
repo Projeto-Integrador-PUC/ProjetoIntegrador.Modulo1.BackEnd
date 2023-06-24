@@ -28,7 +28,8 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Extensions
             builder.Services
                 .AddTransient<IProdutosService, ProdutosService>()
                 .AddTransient<IPagamentosService, PagamentosService>()
-                .AddTransient<IProdutosRepository, ProdutosRepository>();
+                .AddTransient<IProdutosRepository, ProdutosRepository>()
+                .AddTransient<IPagamentosRepository, PagamentosRepository>();
         }
 
         public static string AllowCors(this WebApplicationBuilder builder)

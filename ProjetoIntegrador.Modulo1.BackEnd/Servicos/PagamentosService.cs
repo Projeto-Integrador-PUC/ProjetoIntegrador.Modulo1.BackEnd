@@ -1,5 +1,6 @@
 ﻿using pix_payload_generator.net.Models.CobrancaModels;
 using pix_payload_generator.net.Models.PayloadModels;
+using ProjetoIntegrador.Modulo1.BackEnd.Enums;
 using ProjetoIntegrador.Modulo1.BackEnd.Interfaces;
 using ProjetoIntegrador.Modulo1.BackEnd.Models;
 using System.Globalization;
@@ -12,6 +13,15 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Servicos
         private readonly string _chaveRecebedor = "4f282e7a-a914-487d-b6f8-053bb4d26f35";
         private readonly string _nomeRecebedor = "Only Babies Store";
         private readonly string _cidadeRecebedor = "Sao Paulo";
+
+        private readonly IProdutosRepository _produtosRepository;
+        private readonly IPagamentosRepository _pagamentosRepository;
+
+        public PagamentosService(IProdutosRepository produtosRepository, IPagamentosRepository pagamentosRepository)
+        {
+            _produtosRepository = produtosRepository;
+            _pagamentosRepository = pagamentosRepository;
+        }
         public async Task<CorreiosResponse> CalcularFrete(PrecoPrazoRequest request)
         {
             var precoPrazoResponse = new CorreiosResponse();
@@ -35,6 +45,25 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Servicos
             };
 
             return cobranca.ToPayload("OB", new Merchant(_nomeRecebedor, _cidadeRecebedor)).GenerateStringToQrCode();
+        }
+        
+        public async Task<Guid> RealizarVenda(Venda venda)
+        {
+            var (id, guidResumo) = await _pagamentosRepository.CriarResumoVenda(venda);
+            
+            foreach (var produto in venda.Produtos)
+            {
+                if (produto.QuantidadeSelecionada is null) continue;
+                await _produtosRepository.RetirarDoEstoque(produto.Id, (int)produto.QuantidadeSelecionada);
+                await _pagamentosRepository.CriarVenda(produto, id);
+            }
+
+            await _pagamentosRepository.AtualizarStatus(StatusPedido.Realizado, id);
+
+            if (venda.Pagamento.CartaoCredito is not null)
+                await _pagamentosRepository.AdicionarCartaoCredito(venda.Pagamento.CartaoCredito, id);
+
+            return guidResumo;
         }
         private static async Task<CorreiosResponse> CalcularFrete(string cepOrigem, string cepDestino, double peso, double comprimento, double altura, double largura, double diametro, string codigoServico)
         {

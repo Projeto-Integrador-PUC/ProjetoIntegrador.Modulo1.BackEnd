@@ -41,5 +41,25 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpPost("checkout")]
+        public async Task<IActionResult> RealizarVenda([FromBody] Venda venda)
+        {
+            try
+            {
+                var guidResumo = await _pagamentosService.RealizarVenda(venda);
+                var resposta = new Resposta<Guid>(guidResumo)
+                {
+                    Sucesso = true,
+                    Mensagem = "Compra realizada com sucesso."
+                };
+
+                return Ok(resposta);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

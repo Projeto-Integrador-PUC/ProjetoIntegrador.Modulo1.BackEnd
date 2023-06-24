@@ -169,5 +169,23 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
 
             return await conexao.QueryFirstOrDefaultAsync<Produto>(sql, new { id });
         }
+
+        public async Task<bool> RetirarDoEstoque(int id, int quantidade)
+        {
+            using var conexao = new SqlConnection(_stringDeConexao);
+
+            var sql = $@"
+            UPDATE produto
+            SET quantidade_estoque = quantidade_estoque - @quantidade
+            WHERE id = @id
+            ";
+
+            var affectedRows = await conexao.ExecuteAsync(sql, new { id, quantidade });
+
+            if (affectedRows > 0)
+                return true;
+
+            return false;
+        }
     }
 }
