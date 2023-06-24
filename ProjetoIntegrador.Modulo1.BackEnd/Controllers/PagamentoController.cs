@@ -21,5 +21,25 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
             var precoPrazoResponse = await _pagamentosService.CalcularFrete(request);
             return Ok(precoPrazoResponse);
         }
+
+        [HttpPost("qr-code")]
+        public async Task<IActionResult> GerarQRCode([FromQuery] double valor)
+        {
+            try
+            {
+                var codigoPix = _pagamentosService.GerarPixCopiaCola(valor);
+                var resposta = new Resposta<string>(codigoPix)
+                {
+                    Sucesso = true,
+                    Mensagem = "Código Pix Copia e Cola obtido com sucesso."
+                };
+
+                return Ok(resposta);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

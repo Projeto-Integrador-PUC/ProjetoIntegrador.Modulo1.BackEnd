@@ -1,12 +1,17 @@
-﻿using ProjetoIntegrador.Modulo1.BackEnd.Extensions;
+﻿using pix_payload_generator.net.Models.CobrancaModels;
+using pix_payload_generator.net.Models.PayloadModels;
 using ProjetoIntegrador.Modulo1.BackEnd.Interfaces;
 using ProjetoIntegrador.Modulo1.BackEnd.Models;
+using System.Globalization;
 using System.Xml.Serialization;
 
 namespace ProjetoIntegrador.Modulo1.BackEnd.Servicos
 {
     public class PagamentosService : IPagamentosService
     {
+        private readonly string _chaveRecebedor = "4f282e7a-a914-487d-b6f8-053bb4d26f35";
+        private readonly string _nomeRecebedor = "Only Babies Store";
+        private readonly string _cidadeRecebedor = "Sao Paulo";
         public async Task<CorreiosResponse> CalcularFrete(PrecoPrazoRequest request)
         {
             var precoPrazoResponse = new CorreiosResponse();
@@ -17,6 +22,19 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Servicos
             }
 
             return precoPrazoResponse;
+        }
+
+        public string GerarPixCopiaCola(double valor)
+        {
+            var cobranca = new Cobranca(_chave: _chaveRecebedor)
+            {
+                Valor = new Valor
+                {
+                    Original = valor.ToString("F2", CultureInfo.InvariantCulture),
+                }
+            };
+
+            return cobranca.ToPayload("OB", new Merchant(_nomeRecebedor, _cidadeRecebedor)).GenerateStringToQrCode();
         }
         private static async Task<CorreiosResponse> CalcularFrete(string cepOrigem, string cepDestino, double peso, double comprimento, double altura, double largura, double diametro, string codigoServico)
         {
