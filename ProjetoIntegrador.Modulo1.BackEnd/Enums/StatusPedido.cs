@@ -1,6 +1,6 @@
 ﻿namespace ProjetoIntegrador.Modulo1.BackEnd.Enums
 {
-    public enum StatusPedido
+    public enum SituacaoPedido
     {
         Realizado = 1,
         Aprovado,

@@ -1,8 +1,8 @@
 ﻿using Dapper;
-using ProjetoIntegrador.Modulo1.BackEnd.Enums;
 using ProjetoIntegrador.Modulo1.BackEnd.Interfaces;
 using ProjetoIntegrador.Modulo1.BackEnd.Models;
 using System.Data.SqlClient;
+using StatusPedido = ProjetoIntegrador.Modulo1.BackEnd.Models.StatusPedido;
 
 namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
 {
@@ -66,7 +66,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
             return linhasAfetadas > 0;
         }
 
-        public async Task<bool> AtualizarStatus(StatusPedido status, int idResumoVenda)
+        public async Task<bool> AtualizarStatus(Enums.SituacaoPedido status, int idResumoVenda)
         {
             using var conexao = new SqlConnection(_stringDeConexao);
 
@@ -108,6 +108,52 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
             var linhasAfetadas = await conexao.ExecuteAsync(sql, parametros);
 
             return linhasAfetadas > 0;
+        }
+
+        public async Task<IEnumerable<ResumoVenda>> ObterResumoVenda(Guid guidVenda)
+        {
+            using var conexao = new SqlConnection(_stringDeConexao);
+            
+            var sql = $@"
+            SELECT
+                id_pagamento as {nameof(ResumoVenda.IdPagamento)},
+                id_frete as {nameof(ResumoVenda.IdFrete)},
+                prazo_frete as {nameof(ResumoVenda.PrazoFrete)},
+                valor_frete as {nameof(ResumoVenda.ValorFrete)},
+                SUM(preco_unitario_venda) OVER() as {nameof(ResumoVenda.SubTotal)},
+                endereco as {nameof(ResumoVenda.Logradouro)},
+                endereco2 as {nameof(ResumoVenda.Complemento)},
+                estado as {nameof(ResumoVenda.Estado)},
+                cidade as {nameof(ResumoVenda.Cidade)},
+                cep as {nameof(ResumoVenda.Cep)},
+                id_tipo_status as {nameof(StatusPedido.Situacao)},
+                nome_status as {nameof(StatusPedido.Descricao)},
+                SP.data as {nameof(StatusPedido.DataStatus)},
+                P.id as {nameof(ProdutoVendido.IdProduto)},
+                imagem_base64 as {nameof(ProdutoVendido.Imagem)},
+                quantidade_vendida as {nameof(ProdutoVendido.Quantidade)},
+                preco_unitario_venda as {nameof(ProdutoVendido.ValorUnitario)}
+            FROM resumo_venda RV
+            INNER JOIN venda V ON RV.id = V.id_resumo_venda
+            INNER JOIN produto P on V.produto_id = P.id
+            INNER JOIN status_pedido SP on RV.id = SP.id_resumo_venda
+            INNER JOIN tipo_status TS on SP.id_tipo_status = TS.id
+            WHERE RV.guid_resumo = @guidVenda
+            ";
+
+            var resumos = await conexao.QueryAsync<ResumoVenda, StatusPedido, ProdutoVendido, ResumoVenda>(
+                sql,
+                (resumoVenda, statusPedido, produtoVendido) =>
+                {
+                    resumoVenda.Status.Add(statusPedido);
+                    resumoVenda.Produtos.Add(produtoVendido);
+                    return resumoVenda;
+                },
+                splitOn: "Situacao, IdProduto",
+                param: new { guidVenda }
+                );
+
+            return resumos;
         }
     }
 }

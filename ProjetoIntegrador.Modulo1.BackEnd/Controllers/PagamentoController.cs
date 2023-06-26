@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjetoIntegrador.Modulo1.BackEnd.Interfaces;
 using ProjetoIntegrador.Modulo1.BackEnd.Models;
+using System.Net;
 
 namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
 {
@@ -16,13 +17,29 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
         }
         
         [HttpGet("preco-e-prazo")]
+        [ProducesResponseType(typeof(Resposta<CorreiosResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObterPrecoEPrazo([FromQuery] PrecoPrazoRequest request)
         {
-            var precoPrazoResponse = await _pagamentosService.CalcularFrete(request);
-            return Ok(precoPrazoResponse);
+            try
+            {
+                var precoPrazoResponse = await _pagamentosService.CalcularFrete(request);
+                var resposta = new Resposta<CorreiosResponse>(precoPrazoResponse)
+                {
+                    Sucesso = true,
+                    Mensagem = "Preço e prazo calculados com sucesso"
+                };
+                return Ok(precoPrazoResponse);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
-
+        
         [HttpPost("qr-code")]
+        [ProducesResponseType(typeof(Resposta<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GerarQRCode([FromQuery] double valor)
         {
             try
@@ -43,6 +60,8 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
         }
 
         [HttpPost("checkout")]
+        [ProducesResponseType(typeof(Resposta<Guid>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> RealizarVenda([FromBody] Venda venda)
         {
             try
@@ -52,6 +71,29 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
                 {
                     Sucesso = true,
                     Mensagem = "Compra realizada com sucesso."
+                };
+
+                return Ok(resposta);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("resumo/{guid}")]
+        [ProducesResponseType(typeof(Resposta<ResumoVenda>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ObterResumoVenda([FromRoute] Guid guid)
+        {
+            try
+            {
+                
+                var resumo = await _pagamentosService.ObterResumoVenda(guid);
+                var resposta = new Resposta<ResumoVenda>(resumo)
+                {
+                    Sucesso = true,
+                    Mensagem = "Resumo da venda obtido com sucesso."
                 };
 
                 return Ok(resposta);

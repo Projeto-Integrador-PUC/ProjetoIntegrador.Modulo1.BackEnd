@@ -1,10 +1,10 @@
 ﻿using pix_payload_generator.net.Models.CobrancaModels;
 using pix_payload_generator.net.Models.PayloadModels;
-using ProjetoIntegrador.Modulo1.BackEnd.Enums;
 using ProjetoIntegrador.Modulo1.BackEnd.Interfaces;
 using ProjetoIntegrador.Modulo1.BackEnd.Models;
 using System.Globalization;
 using System.Xml.Serialization;
+using SituacaoPedido = ProjetoIntegrador.Modulo1.BackEnd.Enums.SituacaoPedido;
 
 namespace ProjetoIntegrador.Modulo1.BackEnd.Servicos
 {
@@ -58,13 +58,29 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Servicos
                 await _pagamentosRepository.CriarVenda(produto, id);
             }
 
-            await _pagamentosRepository.AtualizarStatus(StatusPedido.Realizado, id);
+            await _pagamentosRepository.AtualizarStatus(SituacaoPedido.Realizado, id);
 
             if (venda.Pagamento.CartaoCredito is not null)
                 await _pagamentosRepository.AdicionarCartaoCredito(venda.Pagamento.CartaoCredito, id);
 
             return guidResumo;
         }
+
+        public async Task<ResumoVenda> ObterResumoVenda(Guid guid)
+        {
+            var resumos = await _pagamentosRepository.ObterResumoVenda(guid);
+
+            var resumoVenda = resumos.FirstOrDefault();
+            
+            if (resumoVenda is not null)
+            {
+                resumoVenda.Status = resumos.SelectMany(resumo => resumo.Status).DistinctBy(status => status.Situacao).ToList();
+                resumoVenda.Produtos = resumos.SelectMany(resumo => resumo.Produtos).DistinctBy(produto => produto.IdProduto).ToList();
+            }
+
+            return resumoVenda;
+        }
+        
         private static async Task<CorreiosResponse> CalcularFrete(string cepOrigem, string cepDestino, double peso, double comprimento, double altura, double largura, double diametro, string codigoServico)
         {
             var client = new HttpClient();
