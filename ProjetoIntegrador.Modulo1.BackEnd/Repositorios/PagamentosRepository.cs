@@ -131,6 +131,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
                 SP.data as {nameof(StatusPedido.DataStatus)},
                 P.id as {nameof(ProdutoVendido.IdProduto)},
                 imagem_base64 as {nameof(ProdutoVendido.Imagem)},
+                P.nome as {nameof(ProdutoVendido.Nome)},
                 quantidade_vendida as {nameof(ProdutoVendido.Quantidade)},
                 preco_unitario_venda as {nameof(ProdutoVendido.ValorUnitario)}
             FROM resumo_venda RV
