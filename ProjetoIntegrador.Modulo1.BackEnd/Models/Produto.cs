@@ -14,6 +14,10 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Models
         public string? NomeCategoria { get; set; }
         public string? Imagem { get; set; }
         public int? QuantidadeSelecionada { get; set; }
+    }
 
+    public class ProdutoPaginado : Produto
+    {
+        public int TotalProdutos { get; set; }
     }
 }

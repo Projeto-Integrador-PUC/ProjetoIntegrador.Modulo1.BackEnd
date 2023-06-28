@@ -36,7 +36,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Servicos
             return await _produtosRepository.ObterCategorias();
         }
 
-        public async Task<IEnumerable<Produto>> ObterProdutosPaginado(int pagina, int quantidade)
+        public async Task<IEnumerable<ProdutoPaginado>> ObterProdutosPaginado(int pagina, int quantidade)
         {
             return await _produtosRepository.ObterProdutosPaginado(pagina, quantidade);
         }

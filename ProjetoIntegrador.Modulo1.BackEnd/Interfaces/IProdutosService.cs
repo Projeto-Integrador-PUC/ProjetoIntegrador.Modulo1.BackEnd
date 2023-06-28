@@ -11,6 +11,6 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Interfaces
         Task<IEnumerable<Categoria>> ObterCategorias();
         Task<IEnumerable<Produto>> ObterProdutosDestaque();
         Task<Produto> ObterDetalhesDoProduto(int id);
-        Task<IEnumerable<Produto>> ObterProdutosPaginado(int pagina, int quantidade);
+        Task<IEnumerable<ProdutoPaginado>> ObterProdutosPaginado(int pagina, int quantidade);
     }
 }

@@ -114,11 +114,15 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
             return await conexao.QueryAsync<Produto>(sql);
         }
 
-        public async Task<IEnumerable<Produto>> ObterProdutosPaginado(int pagina, int quantidade)
+        public async Task<IEnumerable<ProdutoPaginado>> ObterProdutosPaginado(int pagina, int quantidade)
         {
             using var conexao = new SqlConnection(_stringDeConexao);
 
             var sql = $@"
+            WITH total AS (
+	            SELECT COUNT(*) AS {nameof(ProdutoPaginado.TotalProdutos)}
+	            FROM produto
+            )
             SELECT
                 p.id AS {nameof(Produto.Id)},
                 p.nome AS {nameof(Produto.Nome)},
@@ -128,9 +132,11 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
                 p.categoria_id AS {nameof(Produto.Categoria)},
                 c.nome AS {nameof(Produto.NomeCategoria)},
                 p.produto_destaque AS {nameof(Produto.Destaque)},
-                p.imagem_base64 AS {nameof(Produto.Imagem)}
+                p.imagem_base64 AS {nameof(Produto.Imagem)},
+                t.TotalProdutos as {nameof(ProdutoPaginado.TotalProdutos)}
             FROM produto p
             INNER JOIN categoria c ON c.id = p.categoria_id
+            CROSS JOIN total t
             ORDER BY p.id
             OFFSET @offset ROWS
             FETCH NEXT @quantidade ROWS ONLY
@@ -138,7 +144,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
 
             var offset = (pagina - 1) * quantidade;
 
-            return await conexao.QueryAsync<Produto>(sql, new { offset, quantidade });
+            return await conexao.QueryAsync<ProdutoPaginado>(sql, new { offset, quantidade });
         }
 
 

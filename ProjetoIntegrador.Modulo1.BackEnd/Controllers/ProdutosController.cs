@@ -68,18 +68,32 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(Resposta<IEnumerable<Produto>>), 200)]
-        public async Task<IActionResult> ObterProdutos([FromQuery] int? pagina, [FromQuery] int? quantidade)
+        public async Task<IActionResult> ObterProdutos()
         {
             try
             {
-                IEnumerable<Produto> produtos;
-
-                if (pagina is null || quantidade is null)
-                    produtos = await _produtosService.ObterProdutos();
-                else
-                    produtos = await _produtosService.ObterProdutosPaginado(pagina.Value, quantidade.Value);
-                
+                var produtos = await _produtosService.ObterProdutos();
                 var resposta = new Resposta<IEnumerable<Produto>>(produtos)
+                {
+                    Sucesso = true,
+                    Mensagem = "Produtos obtidos com sucesso!"
+                };
+                return Ok(resposta);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("paginado")]
+        [ProducesResponseType(typeof(Resposta<IEnumerable<ProdutoPaginado>>), 200)]
+        public async Task<IActionResult> ObterProdutosPaginado([FromQuery] int pagina, [FromQuery] int quantidade)
+        {
+            try
+            {
+                var produtos = await _produtosService.ObterProdutosPaginado(pagina, quantidade);
+                var resposta = new Resposta<IEnumerable<ProdutoPaginado>>(produtos)
                 {
                     Sucesso = true,
                     Mensagem = "Produtos obtidos com sucesso!"
@@ -97,7 +111,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
         public async Task<IActionResult> ObterProdutosDestaque()
         {
             try
-            {                
+            {
                 var produtos = await _produtosService.ObterProdutosDestaque();
                 var resposta = new Resposta<IEnumerable<Produto>>(produtos)
                 {
