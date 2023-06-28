@@ -68,11 +68,17 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(Resposta<IEnumerable<Produto>>), 200)]
-        public async Task<IActionResult> ObterProdutos()
+        public async Task<IActionResult> ObterProdutos([FromQuery] int? pagina, [FromQuery] int? quantidade)
         {
             try
             {
-                var produtos = await _produtosService.ObterProdutos();
+                IEnumerable<Produto> produtos;
+
+                if (pagina is null || quantidade is null)
+                    produtos = await _produtosService.ObterProdutos();
+                else
+                    produtos = await _produtosService.ObterProdutosPaginado(pagina.Value, quantidade.Value);
+                
                 var resposta = new Resposta<IEnumerable<Produto>>(produtos)
                 {
                     Sucesso = true,
@@ -91,7 +97,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
         public async Task<IActionResult> ObterProdutosDestaque()
         {
             try
-            {
+            {                
                 var produtos = await _produtosService.ObterProdutosDestaque();
                 var resposta = new Resposta<IEnumerable<Produto>>(produtos)
                 {

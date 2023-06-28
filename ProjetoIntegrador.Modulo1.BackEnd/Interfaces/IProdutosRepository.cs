@@ -12,5 +12,6 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Interfaces
         Task<IEnumerable<Produto>> ObterProdutosDestaque();
         Task<Produto> ObterDetalhesDoProduto(int id);
         Task<bool> RetirarDoEstoque(int id, int quantidade);
+        Task<IEnumerable<Produto>> ObterProdutosPaginado(int pagina, int quantidade);
     }
 }

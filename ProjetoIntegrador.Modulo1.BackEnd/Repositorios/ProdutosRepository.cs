@@ -108,10 +108,37 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
                 p.produto_destaque AS {nameof(Produto.Destaque)},
                 p.imagem_base64 AS {nameof(Produto.Imagem)}
             FROM produto p
-            INNER JOIN categorias c ON c.id = p.categoria_id
+            INNER JOIN categoria c ON c.id = p.categoria_id
             ";
 
             return await conexao.QueryAsync<Produto>(sql);
+        }
+
+        public async Task<IEnumerable<Produto>> ObterProdutosPaginado(int pagina, int quantidade)
+        {
+            using var conexao = new SqlConnection(_stringDeConexao);
+
+            var sql = $@"
+            SELECT
+                p.id AS {nameof(Produto.Id)},
+                p.nome AS {nameof(Produto.Nome)},
+                p.descricao AS {nameof(Produto.Descricao)},
+                p.preco AS {nameof(Produto.Preco)},
+                p.quantidade_estoque AS {nameof(Produto.Quantidade)},
+                p.categoria_id AS {nameof(Produto.Categoria)},
+                c.nome AS {nameof(Produto.NomeCategoria)},
+                p.produto_destaque AS {nameof(Produto.Destaque)},
+                p.imagem_base64 AS {nameof(Produto.Imagem)}
+            FROM produto p
+            INNER JOIN categoria c ON c.id = p.categoria_id
+            ORDER BY p.id
+            OFFSET @offset ROWS
+            FETCH NEXT @quantidade ROWS ONLY
+            ";
+
+            var offset = (pagina - 1) * quantidade;
+
+            return await conexao.QueryAsync<Produto>(sql, new { offset, quantidade });
         }
 
 
