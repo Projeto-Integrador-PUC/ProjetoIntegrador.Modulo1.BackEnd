@@ -17,9 +17,10 @@ builder.Services
     });
 
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCookieAuthentication();
+
 var policyName = builder.AllowCors();
 
 var app = builder.Build();
@@ -31,6 +32,7 @@ app.UseCors(policyName);
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

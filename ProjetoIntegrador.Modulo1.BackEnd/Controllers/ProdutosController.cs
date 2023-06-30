@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjetoIntegrador.Modulo1.BackEnd.Interfaces;
 using ProjetoIntegrador.Modulo1.BackEnd.Models;
 using ProjetoIntegrador.Modulo1.BackEnd.Validators;
@@ -16,6 +17,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(typeof(Resposta), 201)]
         public async Task<IActionResult> AdicionarProduto(Produto produto)
         {

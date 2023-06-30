@@ -1,4 +1,5 @@
-﻿using ProjetoIntegrador.Modulo1.BackEnd.Interfaces;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using ProjetoIntegrador.Modulo1.BackEnd.Interfaces;
 using ProjetoIntegrador.Modulo1.BackEnd.Models;
 using ProjetoIntegrador.Modulo1.BackEnd.Repositorios;
 using ProjetoIntegrador.Modulo1.BackEnd.Servicos;
@@ -26,8 +27,10 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Extensions
         public static void AddServices(this WebApplicationBuilder builder)
         {
             builder.Services
+                .AddTransient<IAdminService, AdminService>()
                 .AddTransient<IProdutosService, ProdutosService>()
                 .AddTransient<IPagamentosService, PagamentosService>()
+                .AddTransient<IAdminRepository, AdminRepository>()
                 .AddTransient<IProdutosRepository, ProdutosRepository>()
                 .AddTransient<IPagamentosRepository, PagamentosRepository>();
         }
@@ -47,6 +50,23 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Extensions
             });
 
             return policyName;
+        }
+
+        public static void AddCookieAuthentication(this IServiceCollection services)
+        {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.Name = "AdminSession";
+                    options.Cookie.HttpOnly = true;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                    options.SlidingExpiration = true;
+                    options.Events.OnRedirectToLogin = context =>
+                    {
+                        context.Response.StatusCode = 403;
+                        return Task.CompletedTask;
+                    };
+                });
         }
     }
 }
