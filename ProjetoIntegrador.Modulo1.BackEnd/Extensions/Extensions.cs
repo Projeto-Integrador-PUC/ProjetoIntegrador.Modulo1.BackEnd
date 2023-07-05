@@ -64,7 +64,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Extensions
                     options.Cookie.Name = "AdminSession";
                     options.Cookie.HttpOnly = false;
                     options.Cookie.SameSite = SameSiteMode.None;
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                     options.SlidingExpiration = true;
                     options.Events.OnRedirectToLogin = context =>
