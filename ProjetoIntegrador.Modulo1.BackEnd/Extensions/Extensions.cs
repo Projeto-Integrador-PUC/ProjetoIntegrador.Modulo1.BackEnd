@@ -38,12 +38,16 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Extensions
         public static string AllowCors(this WebApplicationBuilder builder)
         {
             var policyName = "AllowAll";
-            
+            bool isDevelopment = builder.Environment.IsDevelopment();
+            string[] devOrigins = new string[] { "http://localhost:4200", "https://localhost:4200" };
+            string[] productionOrigins = new string[] { "https://www.onlybabies.store" };
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy(policyName, builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder
+                        .WithOrigins(isDevelopment ? devOrigins: productionOrigins)
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 });
