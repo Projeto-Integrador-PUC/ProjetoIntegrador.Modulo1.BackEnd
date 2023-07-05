@@ -65,6 +65,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Extensions
                     options.Cookie.HttpOnly = false;
                     options.Cookie.SameSite = SameSiteMode.None;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.Domain = "onlybabies.store";
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                     options.SlidingExpiration = true;
                     options.Events.OnRedirectToLogin = context =>
