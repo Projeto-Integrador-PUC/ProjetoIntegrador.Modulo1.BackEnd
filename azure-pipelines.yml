@@ -1,0 +1,23 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+steps:
+# Prepare Analysis Configuration task
+- task: SonarQubePrepare@4
+  inputs:
+    SonarQube: 'YourSonarqubeServerEndpoint'
+    scannerMode: 'MSBuild'
+    projectKey: 'Only_Babes_BackEnd_AYsr1WVRK0QrRqRYr7L8'
+
+# Run Code Analysis task
+- task: SonarQubeAnalyze@4
+
+# Publish Quality Gate Result task
+- task: SonarQubePublish@4
+  inputs:
+    pollingTimeoutSec: '300'
