@@ -10,7 +10,7 @@ steps:
 # Prepare Analysis Configuration task
 - task: SonarQubePrepare@4
   inputs:
-    SonarQube: 'YourSonarqubeServerEndpoint'
+    SonarQube: 'https://83f0-191-31-238-151.ngrok-free.app'
     scannerMode: 'MSBuild'
     projectKey: 'Only_Babes_BackEnd_AYsr1WVRK0QrRqRYr7L8'
 
