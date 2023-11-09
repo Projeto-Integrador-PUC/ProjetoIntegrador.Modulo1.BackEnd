@@ -10,9 +10,9 @@ steps:
 # Prepare Analysis Configuration task
 - task: SonarQubePrepare@4
   inputs:
-    SonarQube: 'https://83f0-191-31-238-151.ngrok-free.app'
+    SonarQube: 'http://74.235.93.227:9000'
     scannerMode: 'MSBuild'
-    projectKey: 'Only_Babes_BackEnd_AYsr1WVRK0QrRqRYr7L8'
+    projectKey: 'Only_Babes_BackEnd_AYu0lpurO3doOUDvEZWu'
 
 # Run Code Analysis task
 - task: SonarQubeAnalyze@4
