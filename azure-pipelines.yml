@@ -8,16 +8,19 @@ trigger:
 
 steps:
 # Prepare Analysis Configuration task
-- task: SonarQubePrepare@4
+- task: SonarQubePrepare@5
   inputs:
     SonarQube: 'SonarQube'
     scannerMode: 'MSBuild'
     projectKey: 'Only_Babes_BackEnd_AYu-RtD4GszNWJS957WI'
 
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+
 # Run Code Analysis task
-- task: SonarQubeAnalyze@4
+- task: SonarQubeAnalyze@5
 
 # Publish Quality Gate Result task
-- task: SonarQubePublish@4
+- task: SonarQubePublish@5
   inputs:
     pollingTimeoutSec: '300'
