@@ -12,7 +12,7 @@ steps:
   inputs:
     SonarQube: 'SonarQube'
     scannerMode: 'MSBuild'
-    projectKey: 'Only_Babes_BackEnd_AYu0lpurO3doOUDvEZWu'
+    projectKey: 'Only_Babes_BackEnd_AYu-RtD4GszNWJS957WI'
 
 # Run Code Analysis task
 - task: SonarQubeAnalyze@4
