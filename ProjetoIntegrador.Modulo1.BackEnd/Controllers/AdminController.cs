@@ -24,6 +24,9 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
         {
             try
             {
+                if (credenciais is null || credenciais.Usuario is null || credenciais.Senha is null)
+                    return BadRequest(new Resposta { Sucesso = false, Mensagem = "Usuário e senha devem ser preenchidos." });
+
                 var autenticacao = await _adminService.Autenticar(credenciais.Usuario, credenciais.Senha);
 
                 if (autenticacao is null)

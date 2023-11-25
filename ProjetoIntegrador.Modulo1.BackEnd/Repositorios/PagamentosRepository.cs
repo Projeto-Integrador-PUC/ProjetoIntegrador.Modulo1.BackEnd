@@ -20,18 +20,18 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Repositorios
 
             var parametros = new
             {
-                id_pagamento = venda.Pagamento.Id,
-                codigo_frete = venda.Entrega.TipoEntrega,
-                nome = venda.Envio.Nome,
-                sobrenome = venda.Envio.Sobrenome,
-                endereco = venda.Envio.Logradouro,
-                endereco2 = venda.Envio.Complemento ?? "",
-                estado = venda.Envio.Estado,
-                cidade = venda.Envio.Cidade,
-                cep = venda.Envio.Cep,
-                email = venda.Envio.Email,
-                valor_frete = venda.Entrega.Valor,
-                prazo_frete = venda.Entrega.Prazo,
+                id_pagamento = venda?.Pagamento?.Id,
+                codigo_frete = venda?.Entrega?.TipoEntrega,
+                nome = venda?.Envio?.Nome,
+                sobrenome = venda?.Envio?.Sobrenome,
+                endereco = venda?.Envio?.Logradouro,
+                endereco2 = venda?.Envio?.Complemento ?? "",
+                estado = venda?.Envio?.Estado,
+                cidade = venda?.Envio?.Cidade,
+                cep = venda?.Envio?.Cep,
+                email = venda?.Envio?.Email,
+                valor_frete = venda?.Entrega?.Valor,
+                prazo_frete = venda?.Entrega?.Prazo,
             };
 
             var sql = $@"

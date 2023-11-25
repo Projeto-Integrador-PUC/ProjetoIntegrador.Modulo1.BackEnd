@@ -25,6 +25,10 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Servicos
         public async Task<CorreiosResponse> CalcularFrete(PrecoPrazoRequest request)
         {
             var precoPrazoResponse = new CorreiosResponse();
+
+            if (request.CodigoServicos is null || request.CepDestino is null || request.CepOrigem is null)
+                return precoPrazoResponse;
+
             foreach (var servico in request.CodigoServicos)
             {
                 var precoPrazo = await CalcularFrete(request.CepOrigem, request.CepDestino, request.Peso, request.Comprimento, request.Altura, request.Largura, request.Diametro, servico);
@@ -60,7 +64,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Servicos
 
             await _pagamentosRepository.AtualizarStatus(SituacaoPedido.Realizado, id);
 
-            if (venda.Pagamento.CartaoCredito is not null)
+            if (venda.Pagamento is not null && venda.Pagamento.CartaoCredito is not null)
                 await _pagamentosRepository.AdicionarCartaoCredito(venda.Pagamento.CartaoCredito, id);
 
             return guidResumo;
@@ -71,12 +75,12 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Servicos
             var resumos = await _pagamentosRepository.ObterResumoVenda(guid);
 
             var resumoVenda = resumos.FirstOrDefault();
+
+            if (resumoVenda is null)
+                return new ResumoVenda();
             
-            if (resumoVenda is not null)
-            {
-                resumoVenda.Status = resumos.SelectMany(resumo => resumo.Status).DistinctBy(status => status.Situacao).ToList();
-                resumoVenda.Produtos = resumos.SelectMany(resumo => resumo.Produtos).DistinctBy(produto => produto.IdProduto).ToList();
-            }
+            resumoVenda.Status = resumos.SelectMany(resumo => resumo.Status).DistinctBy(status => status.Situacao).ToList();
+            resumoVenda.Produtos = resumos.SelectMany(resumo => resumo.Produtos).DistinctBy(produto => produto.IdProduto).ToList();
 
             return resumoVenda;
         }
