@@ -29,7 +29,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
                     Sucesso = true,
                     Mensagem = "Preço e prazo calculados com sucesso"
                 };
-                return Ok(precoPrazoResponse);
+                return Ok(resposta);
             }
             catch (Exception ex)
             {
@@ -40,7 +40,7 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Controllers
         [HttpPost("qr-code")]
         [ProducesResponseType(typeof(Resposta<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GerarQRCode([FromQuery] double valor)
+        public IActionResult GerarQRCode([FromQuery] double valor)
         {
             try
             {

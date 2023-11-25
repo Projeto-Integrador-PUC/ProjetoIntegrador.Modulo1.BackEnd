@@ -13,6 +13,6 @@
     public class Resposta
     {
         public bool Sucesso { get; set; }
-        public string Mensagem { get; set; }
+        public string? Mensagem { get; set; }
     }
 }

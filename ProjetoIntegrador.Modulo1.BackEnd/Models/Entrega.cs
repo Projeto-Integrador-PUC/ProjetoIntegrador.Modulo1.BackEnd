@@ -2,9 +2,9 @@
 {
     public class Entrega
     {
-        public string Nome { get; set; }
-        public double Valor { get; set; }
+        public string? Nome { get; set; }
+        public double? Valor { get; set; }
         public int Prazo { get; set; }
-        public string TipoEntrega { get; set; }
+        public string? TipoEntrega { get; set; }
     }
 }

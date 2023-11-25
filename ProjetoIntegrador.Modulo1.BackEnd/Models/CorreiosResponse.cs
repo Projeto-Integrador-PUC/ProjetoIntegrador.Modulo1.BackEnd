@@ -12,37 +12,37 @@ namespace ProjetoIntegrador.Modulo1.BackEnd.Models
     public class Prazo
     {
         [XmlElement("Codigo")]
-        public string Codigo { get; set; }
+        public string? Codigo { get; set; }
         
         [XmlElement("Valor")]
-        public string Valor { get; set; }
+        public string? Valor { get; set; }
         
         [XmlElement("PrazoEntrega")]
-        public string PrazoEntrega { get; set; }
+        public string? PrazoEntrega { get; set; }
 
         [XmlElement("ValorSemAdicionais")]
-        public string ValorSemAdicionais { get; set; }
+        public string? ValorSemAdicionais { get; set; }
         
         [XmlElement("ValorMaoPropria")]
-        public string ValorMaoPropria { get; set; }
+        public string? ValorMaoPropria { get; set; }
 
         [XmlElement("ValorAvisoRecebimento")]
-        public string ValorAvisoRecebimento { get; set; }
+        public string? ValorAvisoRecebimento { get; set; }
         
         [XmlElement("ValorValorDeclarado")]
-        public string ValorValorDeclarado { get; set; }
+        public string? ValorValorDeclarado { get; set; }
 
         [XmlElement("EntregaDomiciliar")]
-        public string EntregaDomiciliar { get; set; }
+        public string? EntregaDomiciliar { get; set; }
         
         [XmlElement("EntregaSabado")]
-        public string EntregaSabado { get; set; }
+        public string? EntregaSabado { get; set; }
         
         [XmlElement("Erro")]
-        public string Erro { get; set; }
+        public string? Erro { get; set; }
 
         [XmlElement("MsgErro")]
-        public string MsgErro { get; set; }
+        public string? MsgErro { get; set; }
 
     }
 }

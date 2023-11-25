@@ -2,7 +2,7 @@
 
 namespace ProjetoIntegrador.Modulo1.BackEnd.Enums
 {
-    public enum CategoriaEnum
+    public enum CategoriaProduto
     {
         [Description("Alimentação")]
         Alimentacao = 1,
